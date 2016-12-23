@@ -1,0 +1,32 @@
+{
+  "name": "sanctuary-type-identifiers",
+  "description": "Specification for type identifiers",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sanctuary-js/sanctuary-type-identifiers.git"
+  },
+  "main": "index.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "sanctuary",
+    "types"
+  ],
+  "dependencies": {},
+  "ignore": [
+    "/.git/",
+    "/bower_components/",
+    "/node_modules/",
+    "/scripts/",
+    "/test/",
+    "/.*",
+    "/CONTRIBUTING.md",
+    "/Makefile",
+    "/circle.yml",
+    "/package.json"
+  ]
+}
