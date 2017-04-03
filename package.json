@@ -12,10 +12,10 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "eslint": "2.9.x",
+    "eslint": "3.19.x",
     "mocha": "3.2.x",
     "remember-bower": "0.1.x",
-    "sanctuary-style": "0.4.x",
+    "sanctuary-style": "0.5.x",
     "sanctuary-type-classes": "1.3.x",
     "transcribe": "0.5.x",
     "xyz": "2.0.x"
