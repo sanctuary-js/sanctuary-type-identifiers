@@ -20,39 +20,27 @@
 //. purpose: the [`typeof`][1] operator and [`Object.prototype.toString`][2].
 //. Each has pros and cons, but neither supports user-defined types.
 //.
-//. This package specifies an [algorithm][3] for deriving a _type identifier_
-//. from any JavaScript value, and exports an implementation of the algorithm.
-//. Authors of algebraic data types may follow this specification in order to
-//. make their data types compatible with the algorithm.
+//. This package exports a function which derives a _type identifier_ from any
+//. JavaScript value, and a [specification][3] for customizing the type
+//. identifier of a value.
 //.
-//. ### Algorithm
-//.
-//. 1.  Take any JavaScript value `x`.
-//.
-//. 2.  If `x` is `null` or `undefined`, go to step 6.
-//.
-//. 3.  If `x.constructor` evaluates to `null` or `undefined`, go to step 6.
-//.
-//. 4.  If `x.constructor.prototype === x`, go to step 6. This check prevents a
-//.     prototype object from being considered a member of its associated type.
-//.
-//. 5.  If `typeof x.constructor['@@type']` evaluates to `'string'`, return
-//.     the value of `x.constructor['@@type']`.
-//.
-//. 6.  Return the [`Object.prototype.toString`][2] representation of `x`
-//.     without the leading `'[object '` and trailing `']'`.
-//.
-//. ### Compatibility
+//. ### Specification
 //.
 //. For an algebraic data type to be compatible with the [algorithm][3]:
 //.
-//.   - every member of the type must have a `constructor` property pointing
+//.   - every member of the type MUST have a `constructor` property pointing
 //.     to an object known as the _type representative_;
 //.
-//.   - the type representative must have a `@@type` property; and
+//.   - the type representative MUST have a `@@type` property;
 //.
 //.   - the type representative's `@@type` property (the _type identifier_)
-//.     must be a string primitive, ideally `'<npm-package-name>/<type-name>'`.
+//.     MUST be a string primitive; and
+//.
+//.   - the `@@type` property SHOULD have format:
+//.     `'<namespace>/<name>@<version>'` - where `namespace` SHOULD equal the
+//.     NPM package name which defines the type, `name` SHOULD be the unique
+//.     name of the type (without line breaks), and `version` MAY be a numeric
+//.     value representing the version of the type.
 //.
 //. For example:
 //.
@@ -88,17 +76,21 @@
 //. var Identity = require('my-package').Identity;
 //. var type = require('sanctuary-type-identifiers');
 //.
-//. type(null);         // => 'Null'
-//. type(true);         // => 'Boolean'
-//. type([1, 2, 3]);    // => 'Array'
-//. type(Identity);     // => 'Function'
-//. type(Identity(0));  // => 'my-package/Identity'
+//. type(null);        // => {namespace: null, name: 'Null', version: null}
+//. type(true);        // => {namespace: null, name: 'Boolean', version: null}
+//. type([1, 2, 3]);   // => {namespace: null, name: 'Array', version: null}
+//. type(Identity);    // => {namespace: null, name: 'Function', version: null}
+//. type(Identity(0)); // => {
+//.                    //      namespace: 'my-package',
+//.                    //      name: 'Identity',
+//.                    //      version: null
+//.                    //    }
 //. ```
 //.
 //.
 //. [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
 //. [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
-//. [3]: #algorithm
+//. [3]: #specification
 
 (function(f) {
 
@@ -119,14 +111,46 @@
   //  $$type :: String
   var $$type = '@@type';
 
-  //  type :: Any -> String
+  //  RPARSE :: RegExp
+  var RPARSE = /^(?:([^/\n\r]+)\/)?(.+?)(?:@(\d+))?$/;
+
+  //       TypeIdentifier :: (a, b, c) -> TypeIdentifier a b c
+  function TypeIdentifier(namespace, name, version) {
+    return {
+      namespace: namespace,
+      name: name,
+      version: version
+    };
+  }
+
+  //       parseTypeIdentifier :: String
+  //                           -> TypeIdentifier String? String Number?
+  function parseTypeIdentifier(s) {
+    var parsed = RPARSE.exec(s);
+    // parsed is null if the string was empty, or contained newlines
+    if (!parsed) return TypeIdentifier(null, s, null);
+    return TypeIdentifier(
+      parsed[1] || null,
+      parsed[2],
+      parsed[3] ? parseInt(parsed[3], 10) : null
+    );
+  }
+
+  //       parseNativeType :: Any -> TypeIdentifier Null String Null
+  function parseNativeType(x) {
+    var parsed = Object.prototype.toString.call(x)
+                 .slice('[object '.length, -']'.length);
+    return TypeIdentifier(null, parsed, null);
+  }
+
+  //       type :: Any -> String
   function type(x) {
     return x != null &&
            x.constructor != null &&
            x.constructor.prototype !== x &&
            typeof x.constructor[$$type] === 'string' ?
-      x.constructor[$$type] :
-      Object.prototype.toString.call(x).slice('[object '.length, -']'.length);
+      parseTypeIdentifier(x.constructor[$$type]) :
+      parseNativeType(x);
   }
 
   return type;
