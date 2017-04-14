@@ -12,6 +12,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "doctest": "^0.12.0",
     "eslint": "3.19.x",
     "mocha": "3.2.x",
     "remember-bower": "0.1.x",

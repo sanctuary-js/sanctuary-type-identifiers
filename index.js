@@ -72,19 +72,28 @@
 //.
 //. ### Usage
 //.
-//. ```javascript
-//. var Identity = require('my-package').Identity;
-//. var type = require('sanctuary-type-identifiers');
+//. #### With native types
 //.
-//. type(null);        // => {namespace: null, name: 'Null', version: null}
-//. type(true);        // => {namespace: null, name: 'Boolean', version: null}
-//. type([1, 2, 3]);   // => {namespace: null, name: 'Array', version: null}
-//. type(Identity);    // => {namespace: null, name: 'Function', version: null}
-//. type(Identity(0)); // => {
-//.                    //      namespace: 'my-package',
-//.                    //      name: 'Identity',
-//.                    //      version: null
-//.                    //    }
+//. ```javascript
+//. > var type = require('.');
+//. > type(null);
+//. {namespace: null, name: 'Null', version: null}
+//. > type(true);
+//. {namespace: null, name: 'Boolean', version: null}
+//. > type([1, 2, 3]);
+//. {namespace: null, name: 'Array', version: null}
+//. ```
+//.
+//. #### With custom types
+//.
+//. ```javascript
+//. > var type = require('.');
+//. > var IdentityTypeRep = {'@@type': 'my-package/Identity'};
+//. > function Identity(x) { return {constructor: IdentityTypeRep, value: x}; }
+//. > type(Identity);
+//. {namespace: null, name: 'Function', version: null}
+//. > type(Identity(0));
+//. {namespace: 'my-package', name: 'Identity', version: null}
 //. ```
 //.
 //.

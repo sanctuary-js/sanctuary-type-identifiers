@@ -1,3 +1,4 @@
+DOCTEST = node_modules/.bin/doctest --module commonjs --prefix .
 ESLINT = node_modules/.bin/eslint --config node_modules/sanctuary-style/eslint-es3.json --env es3
 MOCHA = node_modules/.bin/mocha --reporter dot --ui tdd
 NPM = npm
@@ -51,3 +52,8 @@ setup:
 .PHONY: test
 test:
 	$(MOCHA) -- test/index.js
+ifeq ($(shell node --version | cut -d . -f 1),v6)
+	$(DOCTEST) -- index.js
+else
+	@echo '[WARN] Doctests are only run in Node v6.x.x (current version is $(shell node --version))' >&2
+endif
