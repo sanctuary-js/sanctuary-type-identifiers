@@ -114,6 +114,9 @@
   //  RPARSE :: RegExp
   var RPARSE = /^(?:([^/\n\r]+)\/)?([^]+?)(?:@(\d+))?$/;
 
+  //  _toString :: Any ~> String
+  var _toString = Object.prototype.toString;
+
   //       TypeIdentifier :: (a, b, c) -> TypeIdentifier a b c
   function TypeIdentifier(namespace, name, version) {
     return {
@@ -137,9 +140,11 @@
 
   //       parseNativeType :: Any -> TypeIdentifier Null String Null
   function parseNativeType(x) {
-    var parsed = Object.prototype.toString.call(x)
-                 .slice('[object '.length, -']'.length);
-    return TypeIdentifier(null, parsed, null);
+    return TypeIdentifier(
+      null,
+      _toString.call(x).slice('[object '.length, -']'.length),
+      null
+    );
   }
 
   //       type :: Any -> String
