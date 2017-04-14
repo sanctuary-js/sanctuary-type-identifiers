@@ -59,7 +59,7 @@ test('type', function() {
   eq(type(mock('')), parsed(null, '', null));
   eq(type(mock('/Type')), parsed(null, '/Type', null));
   eq(type(mock('@0')), parsed(null, '@0', null));
-  eq(type(mock('foo/\n@1')), parsed(null, 'foo/\n@1', null));
+  eq(type(mock('foo/\n@1')), parsed('foo', '\n', 1));
   eq(type(mock('Type@0')), parsed(null, 'Type', 0));
   eq(type(mock('Type@1')), parsed(null, 'Type', 1));
   eq(type(mock('Type@999')), parsed(null, 'Type', 999));

@@ -39,8 +39,8 @@
 //.   - the `@@type` property SHOULD have format:
 //.     `'<namespace>/<name>@<version>'` - where `namespace` SHOULD equal the
 //.     NPM package name which defines the type, `name` SHOULD be the unique
-//.     name of the type (without line breaks), and `version` MAY be a numeric
-//.     value representing the version of the type.
+//.     name of the type, and `version` MAY be a numeric value representing the
+//.     version of the type.
 //.
 //. For example:
 //.
@@ -112,7 +112,7 @@
   var $$type = '@@type';
 
   //  RPARSE :: RegExp
-  var RPARSE = /^(?:([^/\n\r]+)\/)?(.+?)(?:@(\d+))?$/;
+  var RPARSE = /^(?:([^/\n\r]+)\/)?([^]+?)(?:@(\d+))?$/;
 
   //       TypeIdentifier :: (a, b, c) -> TypeIdentifier a b c
   function TypeIdentifier(namespace, name, version) {
@@ -126,9 +126,8 @@
   //       parseTypeIdentifier :: String
   //                           -> TypeIdentifier String? String Number?
   function parseTypeIdentifier(s) {
+    if (!s.length) return TypeIdentifier(null, s, null);
     var parsed = RPARSE.exec(s);
-    // parsed is null if the string was empty, or contained newlines
-    if (!parsed) return TypeIdentifier(null, s, null);
     return TypeIdentifier(
       parsed[1] || null,
       parsed[2],
