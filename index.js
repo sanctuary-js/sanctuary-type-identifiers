@@ -99,7 +99,8 @@
   //  RPARSE :: RegExp
   var RPARSE = /^(?:([^/\n\r]+)\/)?([^]+?)(?:@(\d+))?$/;
 
-  //       TypeIdentifier :: (Nullable String, String, Number) -> TypeIdentifier
+  //       TypeIdentifier :: (Nullable String, String, Number)
+  //                      -> TypeIdentifier
   function TypeIdentifier(namespace, name, version) {
     return {
       namespace: namespace,
@@ -110,7 +111,7 @@
 
   //       parseTypeIdentifier :: String -> TypeIdentifier
   function parseTypeIdentifier(s) {
-    if (!s.length) return TypeIdentifier(null, s, null);
+    if (!s.length) return TypeIdentifier(null, s, 1);
     var parsed = RPARSE.exec(s);
     return TypeIdentifier(
       parsed[1] || null,
@@ -134,11 +135,11 @@
   //.
   //. ```javascript
   //. > type(null);
-  //. {namespace: null, name: 'Null', version: null}
+  //. {namespace: null, name: 'Null', version: 1}
   //. > type(true);
-  //. {namespace: null, name: 'Boolean', version: null}
+  //. {namespace: null, name: 'Boolean', version: 1}
   //. > type([1, 2, 3]);
-  //. {namespace: null, name: 'Array', version: null}
+  //. {namespace: null, name: 'Array', version: 1}
   //. ```
   //.
   //. #### With custom types
@@ -148,9 +149,9 @@
   //. > function Identity(x) { this.value = x; }
   //. > Identity.prototype.constructor = IdentityTypeRep;
   //. > type(Identity);
-  //. {namespace: null, name: 'Function', version: null}
+  //. {namespace: null, name: 'Function', version: 1}
   //. > type(new Identity(0));
-  //. {namespace: 'my-package', name: 'Identity', version: null}
+  //. {namespace: 'my-package', name: 'Identity', version: 1}
   //. ```
   //
   //       type :: Any -> String

@@ -42,7 +42,7 @@ function TypeIdentifier(namespace, name, version) {
 }
 
 function named(name) {
-  return TypeIdentifier(null, name, null);
+  return TypeIdentifier(null, name, 1);
 }
 
 test('type', function() {
@@ -54,20 +54,20 @@ test('type', function() {
   eq(type(mock(new String(''))), named('Object'));
   eq(type(mock('Type')), named('Type'));
 
-  eq(type(mock('package/Type')), TypeIdentifier('package', 'Type', null));
-  eq(type(mock('package/Type/X')), TypeIdentifier('package', 'Type/X', null));
-  eq(type(mock('')), TypeIdentifier(null, '', null));
-  eq(type(mock('/Type')), TypeIdentifier(null, '/Type', null));
-  eq(type(mock('@0')), TypeIdentifier(null, '@0', null));
+  eq(type(mock('package/Type')), TypeIdentifier('package', 'Type', 1));
+  eq(type(mock('package/Type/X')), TypeIdentifier('package', 'Type/X', 1));
+  eq(type(mock('')), TypeIdentifier(null, '', 1));
+  eq(type(mock('/Type')), TypeIdentifier(null, '/Type', 1));
+  eq(type(mock('@0')), TypeIdentifier(null, '@0', 1));
   eq(type(mock('foo/\n@1')), TypeIdentifier('foo', '\n', 1));
   eq(type(mock('Type@0')), TypeIdentifier(null, 'Type', 0));
   eq(type(mock('Type@1')), TypeIdentifier(null, 'Type', 1));
   eq(type(mock('Type@999')), TypeIdentifier(null, 'Type', 999));
-  eq(type(mock('Type@X')), TypeIdentifier(null, 'Type@X', null));
+  eq(type(mock('Type@X')), TypeIdentifier(null, 'Type@X', 1));
   eq(type(mock('package/Type@1')), TypeIdentifier('package', 'Type', 1));
   eq(type(mock('package////@3@2@1@1')), TypeIdentifier('package', '///@3@2@1', 1));
 
-  eq(type(Identity(42)), TypeIdentifier('my-package', 'Identity', null));
+  eq(type(Identity(42)), TypeIdentifier('my-package', 'Identity', 1));
   eq(type(Identity), named('Function'));
   eq(type(Identity.prototype), named('Object'));
   eq(type(Nothing), TypeIdentifier('my-package', 'Maybe', 1));
