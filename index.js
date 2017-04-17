@@ -42,9 +42,9 @@
 //.     unique name of the type, and `version` MUST be a numeric value which
 //.     SHOULD represent the version of the type.
 //.
-//.   - if the `@@type` property does not conform to the format specified
-//.     above, it is assumed that the entire string represents the *name* of
-//.     the type.
+//.       - If the property does not conform to the format specified above, it
+//.         is assumed that the entire string represents the *name* of the
+//.         type, and *namespace* will be `null`.
 //.
 //. For example:
 //.
