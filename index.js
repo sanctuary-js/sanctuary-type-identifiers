@@ -38,12 +38,13 @@
 //.
 //.   - the `@@type` property SHOULD have format:
 //.     `'<namespace>/<name>[@<version>]'` - where `namespace` SHOULD equal
-//.     the NPM package name which defines the type, `name` SHOULD be the unique
-//.     name of the type, and `version` MUST be a numeric value which
+//.     the NPM package name which defines the type, `name` SHOULD be the
+//.     unique name of the type, and `version` MUST be a numeric value which
 //.     SHOULD represent the version of the type.
 //.
-//.   - if the `@@type` property does not conform to the format specified above,
-//.     it is assumed that the entire string represents the *name* of the type.
+//.   - if the `@@type` property does not conform to the format specified
+//.     above, it is assumed that the entire string represents the *name* of
+//.     the type.
 //.
 //. For example:
 //.
@@ -143,10 +144,11 @@
   //.
   //. ```javascript
   //. > var IdentityTypeRep = {'@@type': 'my-package/Identity'};
-  //. > function Identity(x) { return {constructor: IdentityTypeRep, value: x}; }
+  //. > function Identity(x) { this.value = x; }
+  //. > Identity.prototype.constructor = IdentityTypeRep;
   //. > type(Identity);
   //. {namespace: null, name: 'Function', version: null}
-  //. > type(Identity(0));
+  //. > type(new Identity(0));
   //. {namespace: 'my-package', name: 'Identity', version: null}
   //. ```
   //
