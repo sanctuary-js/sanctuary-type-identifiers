@@ -99,7 +99,7 @@
   //  RPARSE :: RegExp
   var RPARSE = /^(?:([^/\n\r]+)\/)?([^]+?)(?:@(\d+))?$/;
 
-  //       TypeIdentifier :: (a, b, c) -> TypeIdentifier a b c
+  //       TypeIdentifier :: (Nullable String, String, Number) -> TypeIdentifier
   function TypeIdentifier(namespace, name, version) {
     return {
       namespace: namespace,
@@ -108,8 +108,7 @@
     };
   }
 
-  //       parseTypeIdentifier :: String
-  //                           -> TypeIdentifier String? String Number
+  //       parseTypeIdentifier :: String -> TypeIdentifier
   function parseTypeIdentifier(s) {
     if (!s.length) return TypeIdentifier(null, s, null);
     var parsed = RPARSE.exec(s);
@@ -120,8 +119,8 @@
     );
   }
 
-  //       parseNativeType :: Any -> TypeIdentifier Null String Number
-  function parseNativeType(x) {
+  //       identifyNativeType :: Any -> TypeIdentifier
+  function identifyNativeType(x) {
     return TypeIdentifier(
       null,
       Object.prototype.toString.call(x).slice('[object '.length, -']'.length),
@@ -161,7 +160,7 @@
            x.constructor.prototype !== x &&
            typeof x.constructor[$$type] === 'string' ?
       parseTypeIdentifier(x.constructor[$$type]) :
-      parseNativeType(x);
+      identifyNativeType(x);
   }
 
   return type;
