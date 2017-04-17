@@ -113,8 +113,8 @@
 
   //       parseTypeIdentifier :: String -> TypeIdentifier
   function parseTypeIdentifier(s) {
-    if (s === '') return TypeIdentifier(null, s, 1);
     var parsed = RPARSE.exec(s);
+    if (parsed == null) return TypeIdentifier(null, s, 1);
     return TypeIdentifier(
       parsed[1] == null ? null : parsed[1],
       parsed[2],
