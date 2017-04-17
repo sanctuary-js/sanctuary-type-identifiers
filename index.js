@@ -70,36 +70,6 @@
 //. }
 //. ```
 //.
-//. ### Usage
-//.
-//. #### With native types
-//.
-//. ```javascript
-//. > var type = require('.');
-//. > type(null);
-//. {namespace: null, name: 'Null', version: null}
-//. > type(true);
-//. {namespace: null, name: 'Boolean', version: null}
-//. > type([1, 2, 3]);
-//. {namespace: null, name: 'Array', version: null}
-//. ```
-//.
-//. #### With custom types
-//.
-//. ```javascript
-//. > var type = require('.');
-//. > var IdentityTypeRep = {'@@type': 'my-package/Identity'};
-//. > function Identity(x) { return {constructor: IdentityTypeRep, value: x}; }
-//. > type(Identity);
-//. {namespace: null, name: 'Function', version: null}
-//. > type(Identity(0));
-//. {namespace: 'my-package', name: 'Identity', version: null}
-//. ```
-//.
-//.
-//. [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
-//. [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
-//. [3]: #specification
 
 (function(f) {
 
@@ -153,6 +123,30 @@
     );
   }
 
+  //. ### Usage
+  //.
+  //. #### With native types
+  //.
+  //. ```javascript
+  //. > type(null);
+  //. {namespace: null, name: 'Null', version: null}
+  //. > type(true);
+  //. {namespace: null, name: 'Boolean', version: null}
+  //. > type([1, 2, 3]);
+  //. {namespace: null, name: 'Array', version: null}
+  //. ```
+  //.
+  //. #### With custom types
+  //.
+  //. ```javascript
+  //. > var IdentityTypeRep = {'@@type': 'my-package/Identity'};
+  //. > function Identity(x) { return {constructor: IdentityTypeRep, value: x}; }
+  //. > type(Identity);
+  //. {namespace: null, name: 'Function', version: null}
+  //. > type(Identity(0));
+  //. {namespace: 'my-package', name: 'Identity', version: null}
+  //. ```
+  //
   //       type :: Any -> String
   function type(x) {
     return x != null &&
@@ -166,3 +160,8 @@
   return type;
 
 }));
+
+//.
+//. [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
+//. [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
+//. [3]: #specification
