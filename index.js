@@ -46,6 +46,8 @@
 //.         is assumed that the entire string represents the *name* of the
 //.         type, and *namespace* will be `null`.
 //.
+//.       - If the version is not given, it is assumed to be `1`.
+//.
 //. For example:
 //.
 //. ```javascript
@@ -107,23 +109,23 @@
   }
 
   //       parseTypeIdentifier :: String
-  //                           -> TypeIdentifier String? String Number?
+  //                           -> TypeIdentifier String? String Number
   function parseTypeIdentifier(s) {
     if (!s.length) return TypeIdentifier(null, s, null);
     var parsed = RPARSE.exec(s);
     return TypeIdentifier(
       parsed[1] || null,
       parsed[2],
-      parsed[3] ? parseInt(parsed[3], 10) : null
+      parsed[3] ? parseInt(parsed[3], 10) : 1
     );
   }
 
-  //       parseNativeType :: Any -> TypeIdentifier Null String Null
+  //       parseNativeType :: Any -> TypeIdentifier Null String Number
   function parseNativeType(x) {
     return TypeIdentifier(
       null,
       Object.prototype.toString.call(x).slice('[object '.length, -']'.length),
-      null
+      1
     );
   }
 
