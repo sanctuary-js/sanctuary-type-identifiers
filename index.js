@@ -117,9 +117,9 @@
     if (s === '') return TypeIdentifier(null, s, 1);
     var parsed = RPARSE.exec(s);
     return TypeIdentifier(
-      parsed[1] || null,
+      parsed[1] == null ? null : parsed[1],
       parsed[2],
-      parsed[3] ? parseInt(parsed[3], 10) : 1
+      parsed[3] == null ? 1 : parseInt(parsed[3], 10)
     );
   }
 
