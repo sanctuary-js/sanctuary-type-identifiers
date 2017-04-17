@@ -78,7 +78,6 @@
 //.   return {constructor: IdentityTypeRep, value: x};
 //. }
 //. ```
-//.
 
 (function(f) {
 
@@ -171,7 +170,6 @@
 
 }));
 
-//.
 //. [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
 //. [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
 //. [3]: #specification
