@@ -119,7 +119,7 @@
     return TypeIdentifier(
       parsed[1] == null ? null : parsed[1],
       parsed[2],
-      parsed[3] == null ? 1 : parseInt(parsed[3], 10)
+      parsed[3] == null ? 1 : Number(parsed[3])
     );
   }
 
