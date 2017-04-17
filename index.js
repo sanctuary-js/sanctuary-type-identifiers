@@ -34,9 +34,7 @@
 //.   - the type representative MUST have a `@@type` property;
 //.
 //.   - the type representative's `@@type` property (the _type identifier_)
-//.     MUST be a string primitive; and
-//.
-//.   - the `@@type` property SHOULD have format:
+//.     MUST be a string primitive and SHOULD have format:
 //.     `'<namespace>:<name>[@<version>]'`, where:
 //.
 //.       - The `namespace` MUST be a [valid npm package name][4] which SHOULD
