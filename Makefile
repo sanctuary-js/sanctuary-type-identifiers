@@ -35,6 +35,7 @@ lint:
 	  --env node \
 	  --global suite \
 	  --global test \
+	  --rule 'max-len: [off]' \
 	  -- test/index.js
 	$(REMEMBER_BOWER) $(shell pwd)
 

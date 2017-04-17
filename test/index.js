@@ -37,12 +37,12 @@ function mock($$type) {
   return {constructor: {'@@type': $$type}};
 }
 
-function parsed(namespace, name, version) {
+function TypeIdentifier(namespace, name, version) {
   return {namespace: namespace, name: name, version: version};
 }
 
 function named(name) {
-  return parsed(null, name, null);
+  return TypeIdentifier(null, name, null);
 }
 
 test('type', function() {
@@ -54,24 +54,24 @@ test('type', function() {
   eq(type(mock(new String(''))), named('Object'));
   eq(type(mock('Type')), named('Type'));
 
-  eq(type(mock('package/Type')), parsed('package', 'Type', null));
-  eq(type(mock('package/Type/X')), parsed('package', 'Type/X', null));
-  eq(type(mock('')), parsed(null, '', null));
-  eq(type(mock('/Type')), parsed(null, '/Type', null));
-  eq(type(mock('@0')), parsed(null, '@0', null));
-  eq(type(mock('foo/\n@1')), parsed('foo', '\n', 1));
-  eq(type(mock('Type@0')), parsed(null, 'Type', 0));
-  eq(type(mock('Type@1')), parsed(null, 'Type', 1));
-  eq(type(mock('Type@999')), parsed(null, 'Type', 999));
-  eq(type(mock('Type@X')), parsed(null, 'Type@X', null));
-  eq(type(mock('package/Type@1')), parsed('package', 'Type', 1));
-  eq(type(mock('package////@3@2@1@1')), parsed('package', '///@3@2@1', 1));
+  eq(type(mock('package/Type')), TypeIdentifier('package', 'Type', null));
+  eq(type(mock('package/Type/X')), TypeIdentifier('package', 'Type/X', null));
+  eq(type(mock('')), TypeIdentifier(null, '', null));
+  eq(type(mock('/Type')), TypeIdentifier(null, '/Type', null));
+  eq(type(mock('@0')), TypeIdentifier(null, '@0', null));
+  eq(type(mock('foo/\n@1')), TypeIdentifier('foo', '\n', 1));
+  eq(type(mock('Type@0')), TypeIdentifier(null, 'Type', 0));
+  eq(type(mock('Type@1')), TypeIdentifier(null, 'Type', 1));
+  eq(type(mock('Type@999')), TypeIdentifier(null, 'Type', 999));
+  eq(type(mock('Type@X')), TypeIdentifier(null, 'Type@X', null));
+  eq(type(mock('package/Type@1')), TypeIdentifier('package', 'Type', 1));
+  eq(type(mock('package////@3@2@1@1')), TypeIdentifier('package', '///@3@2@1', 1));
 
-  eq(type(Identity(42)), parsed('my-package', 'Identity', null));
+  eq(type(Identity(42)), TypeIdentifier('my-package', 'Identity', null));
   eq(type(Identity), named('Function'));
   eq(type(Identity.prototype), named('Object'));
-  eq(type(Nothing), parsed('my-package', 'Maybe', 1));
-  eq(type(Just(0)), parsed('my-package', 'Maybe', 1));
+  eq(type(Nothing), TypeIdentifier('my-package', 'Maybe', 1));
+  eq(type(Just(0)), TypeIdentifier('my-package', 'Maybe', 1));
   eq(type(Nothing.constructor), named('Object'));
 
   eq(type(false), named('Boolean'));
