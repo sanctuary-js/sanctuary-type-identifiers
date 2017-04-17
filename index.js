@@ -37,10 +37,15 @@
 //.     MUST be a string primitive; and
 //.
 //.   - the `@@type` property SHOULD have format:
-//.     `'<namespace>/<name>[@<version>]'` - where `namespace` SHOULD equal
-//.     the NPM package name which defines the type, `name` SHOULD be the
-//.     unique name of the type, and `version` MUST be a numeric value which
-//.     SHOULD represent the version of the type.
+//.     `'<namespace>:<name>[@<version>]'`, where:
+//.
+//.       - The `namespace` MUST be a [valid npm package name][4] which SHOULD
+//.         equal the npm package name which defines the type; and
+//.
+//.       - the `name` SHOULD be the unique name of the type; and
+//.
+//.       - the `version` MUST be a numeric value which SHOULD represent the
+//.         version of the type.
 //.
 //.       - If the property does not conform to the format specified above, it
 //.         is assumed that the entire string represents the *name* of the
@@ -97,7 +102,7 @@
   var $$type = '@@type';
 
   //  RPARSE :: RegExp
-  var RPARSE = /^(?:([^/\n\r]+)\/)?([^]+?)(?:@(\d+))?$/;
+  var RPARSE = /^(?:((?!\.|_)@?[0-9a-zA-Z./_%-]{1,214}):)?([^]+?)(?:@(\d+))?$/;
 
   //       TypeIdentifier :: (Nullable String, String, Number)
   //                      -> TypeIdentifier
@@ -145,7 +150,7 @@
   //. #### With custom types
   //.
   //. ```javascript
-  //. > var IdentityTypeRep = {'@@type': 'my-package/Identity'};
+  //. > var IdentityTypeRep = {'@@type': 'my-package:Identity'};
   //. > function Identity(x) { this.value = x; }
   //. > Identity.prototype.constructor = IdentityTypeRep;
   //. > type(Identity);
@@ -172,3 +177,4 @@
 //. [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
 //. [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
 //. [3]: #specification
+//. [4]: https://docs.npmjs.com/files/package.json#name
