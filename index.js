@@ -101,7 +101,7 @@
   var $$type = '@@type';
 
   //  RPARSE :: RegExp
-  var RPARSE = /^(?:((?:@[^]+?\/)?[^/]+)\/)?([^]+?)(?:@(\d+))?$/;
+  var RPARSE = /^((?:@[^]+?\/)?[^/]+)\/([^]+?)(?:@(\d+))?$/;
 
   //       TypeIdentifier :: (Nullable String, String, Number)
   //                      -> TypeIdentifier

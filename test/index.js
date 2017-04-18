@@ -61,11 +61,10 @@ test('type', function() {
   eq(type(mock('/Type')), TypeIdentifier(null, '/Type', 0));
   eq(type(mock('@0')), TypeIdentifier(null, '@0', 0));
   eq(type(mock('foo/\n@1')), TypeIdentifier('foo', '\n', 1));
-  eq(type(mock('Type@0')), TypeIdentifier(null, 'Type', 0));
-  eq(type(mock('Type@1')), TypeIdentifier(null, 'Type', 1));
-  eq(type(mock('Type@999')), TypeIdentifier(null, 'Type', 999));
-  eq(type(mock('Type@X')), TypeIdentifier(null, 'Type@X', 0));
+  eq(type(mock('Type@1')), TypeIdentifier(null, 'Type@1', 0));
   eq(type(mock('package/Type@1')), TypeIdentifier('package', 'Type', 1));
+  eq(type(mock('package/Type@999')), TypeIdentifier('package', 'Type', 999));
+  eq(type(mock('package/Type@X')), TypeIdentifier('package', 'Type@X', 0));
   eq(type(mock('package////@3@2@1@1')), TypeIdentifier('package', '///@3@2@1', 1));
 
   eq(type(Identity(42)), TypeIdentifier('my-package', 'Identity', 0));
