@@ -49,7 +49,7 @@
 //.         is assumed that the entire string represents the *name* of the
 //.         type, and *namespace* will be `null`.
 //.
-//.       - If the version is not given, it is assumed to be `1`.
+//.       - If the version is not given, it is assumed to be `0`.
 //.
 //. For example:
 //.
@@ -114,11 +114,11 @@
   //       parseTypeIdentifier :: String -> TypeIdentifier
   function parseTypeIdentifier(s) {
     var parsed = RPARSE.exec(s);
-    if (parsed == null) return TypeIdentifier(null, s, 1);
+    if (parsed == null) return TypeIdentifier(null, s, 0);
     return TypeIdentifier(
       parsed[1] == null ? null : parsed[1],
       parsed[2],
-      parsed[3] == null ? 1 : Number(parsed[3])
+      parsed[3] == null ? 0 : Number(parsed[3])
     );
   }
 
@@ -127,7 +127,7 @@
     return TypeIdentifier(
       null,
       Object.prototype.toString.call(x).slice('[object '.length, -']'.length),
-      1
+      0
     );
   }
 
@@ -137,21 +137,21 @@
   //.
   //. ```javascript
   //. > type(null);
-  //. {namespace: null, name: 'Null', version: 1}
+  //. {namespace: null, name: 'Null', version: 0}
   //. > type(true);
-  //. {namespace: null, name: 'Boolean', version: 1}
+  //. {namespace: null, name: 'Boolean', version: 0}
   //. > type([1, 2, 3]);
-  //. {namespace: null, name: 'Array', version: 1}
+  //. {namespace: null, name: 'Array', version: 0}
   //. ```
   //.
   //. #### With custom types
   //.
   //. ```javascript
-  //. > var IdentityTypeRep = {'@@type': 'my-package:Identity'};
+  //. > var IdentityTypeRep = {'@@type': 'my-package:Identity@1'};
   //. > function Identity(x) { this.value = x; }
   //. > Identity.prototype.constructor = IdentityTypeRep;
   //. > type(Identity);
-  //. {namespace: null, name: 'Function', version: 1}
+  //. {namespace: null, name: 'Function', version: 0}
   //. > type(new Identity(0));
   //. {namespace: 'my-package', name: 'Identity', version: 1}
   //. ```
