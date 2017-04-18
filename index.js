@@ -35,7 +35,7 @@
 //.
 //.   - the type representative's `@@type` property (the _type identifier_)
 //.     MUST be a string primitive and SHOULD have format:
-//.     `'<namespace>:<name>[@<version>]'`, where:
+//.     `'<namespace>/<name>[@<version>]'`, where:
 //.
 //.       - The `namespace` MUST be a [valid npm package name][4] which SHOULD
 //.         equal the npm package name which defines the type; and
@@ -99,7 +99,7 @@
   var $$type = '@@type';
 
   //  RPARSE :: RegExp
-  var RPARSE = /^(?:((?!\.|_)@?[0-9a-zA-Z./_%-]{1,214}):)?([^]+?)(?:@(\d+))?$/;
+  var RPARSE = /^(?:((?:@[^]+?\/)?[^\/]+)\/)?([^]+?)(?:@(\d+))?$/;
 
   //       TypeIdentifier :: (Nullable String, String, Number)
   //                      -> TypeIdentifier
@@ -147,7 +147,7 @@
   //. #### With custom types
   //.
   //. ```javascript
-  //. > var IdentityTypeRep = {'@@type': 'my-package:Identity@1'};
+  //. > var IdentityTypeRep = {'@@type': 'my-package/Identity@1'};
   //. > function Identity(x) { this.value = x; }
   //. > Identity.prototype.constructor = IdentityTypeRep;
   //. > type(Identity);
