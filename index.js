@@ -37,8 +37,10 @@
 //.     MUST be a string primitive and SHOULD have format:
 //.     `'<namespace>/<name>[@<version>]'`, where:
 //.
-//.       - The `namespace` SHOULD equal the npm package name which defines the
-//.         type; and
+//.       - The `namespace` MUST consist of one or more non-`/` characters, MAY
+//.         contain a single `/` if it starts with `@` (to support
+//.         [npm scopes][4]), and SHOULD equal the npm package name which
+//.         defines the type; and
 //.
 //.       - the `name` SHOULD be the unique name of the type; and
 //.
@@ -176,3 +178,4 @@
 //. [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
 //. [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
 //. [3]: #specification
+//. [4]: https://docs.npmjs.com/misc/scope
