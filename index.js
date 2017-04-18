@@ -45,11 +45,11 @@
 //.       - the `version` MUST be a numeric value consisting of one or more
 //.         digits, and it SHOULD represent the version of the type.
 //.
-//.       - If the property does not conform to the format specified above, it
-//.         is assumed that the entire string represents the _name_ of the
-//.         type, and _namespace_ will be `null`.
+//.   - If the property does not conform to the format specified above, it is
+//.     assumed that the entire string represents the _name_ of the type, and
+//.     _namespace_ will be `null`.
 //.
-//.       - If the version is not given, it is assumed to be `0`.
+//.   - If the version is not given, it is assumed to be `0`.
 //.
 //. For example:
 //.
