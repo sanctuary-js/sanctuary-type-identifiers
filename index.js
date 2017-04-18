@@ -42,8 +42,8 @@
 //.
 //.       - the `name` SHOULD be the unique name of the type; and
 //.
-//.       - the `version` MUST be a numeric value which SHOULD represent the
-//.         version of the type.
+//.       - the `version` MUST be a numeric value consisting of one or more
+//.         digits, and it SHOULD represent the version of the type.
 //.
 //.       - If the property does not conform to the format specified above, it
 //.         is assumed that the entire string represents the *name* of the
