@@ -26,7 +26,7 @@
 //.
 //. ### Specification
 //.
-//. For an algebraic data type to be compatible with the algorithm:
+//. For a type to be compatible with the algorithm:
 //.
 //.   - every member of the type MUST have a `constructor` property pointing
 //.     to an object known as the _type representative_;
