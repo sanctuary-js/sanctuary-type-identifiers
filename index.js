@@ -138,8 +138,10 @@
   //. ```javascript
   //. > type(null);
   //. {namespace: null, name: 'Null', version: 0}
+  //.
   //. > type(true);
   //. {namespace: null, name: 'Boolean', version: 0}
+  //.
   //. > type([1, 2, 3]);
   //. {namespace: null, name: 'Array', version: 0}
   //. ```
@@ -152,6 +154,7 @@
   //. > Identity.prototype.constructor = IdentityTypeRep;
   //. > type(Identity);
   //. {namespace: null, name: 'Function', version: 0}
+  //.
   //. > type(new Identity(0));
   //. {namespace: 'my-package', name: 'Identity', version: 1}
   //. ```
