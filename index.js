@@ -37,8 +37,8 @@
 //.     MUST be a string primitive and SHOULD have format:
 //.     `'<namespace>/<name>[@<version>]'`, where:
 //.
-//.       - The `namespace` MUST be a [valid npm package name][4] which SHOULD
-//.         equal the npm package name which defines the type; and
+//.       - The `namespace` SHOULD equal the npm package name which defines the
+//.         type; and
 //.
 //.       - the `name` SHOULD be the unique name of the type; and
 //.
@@ -176,4 +176,3 @@
 //. [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
 //. [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
 //. [3]: #specification
-//. [4]: https://docs.npmjs.com/files/package.json#name
