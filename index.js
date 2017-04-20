@@ -41,7 +41,8 @@
 //.         equal the npm package name which defines the type (including
 //.         [scope][4] where appropriate); and
 //.
-//.       - the `name` SHOULD be the unique name of the type; and
+//.       - the `name` MUST consist of one or more characters, and SHOULD be
+//.         the unique name of the type; and
 //.
 //.       - the `version` MUST be a numeric value consisting of one or more
 //.         digits, and it SHOULD represent the version of the type.
