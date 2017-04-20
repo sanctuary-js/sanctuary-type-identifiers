@@ -151,9 +151,8 @@
   //. #### With custom types
   //.
   //. ```javascript
-  //. > var IdentityTypeRep = {'@@type': 'my-package/Identity@1'};
   //. > function Identity(x) { this.value = x; }
-  //. > Identity.prototype.constructor = IdentityTypeRep;
+  //. > Identity['@@type'] = 'my-package/Identity@1';
   //. > type(Identity);
   //. {namespace: null, name: 'Function', version: 0}
   //.
