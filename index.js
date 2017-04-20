@@ -37,10 +37,9 @@
 //.     MUST be a string primitive and SHOULD have format:
 //.     `'<namespace>/<name>[@<version>]'`, where:
 //.
-//.       - The `namespace` MUST consist of one or more non-`/` characters, MAY
-//.         contain a single `/` if it starts with `@` (to support
-//.         [npm scopes][4]), and SHOULD equal the npm package name which
-//.         defines the type; and
+//.       - The `namespace` MUST consist of one or more characters, and SHOULD
+//.         equal the npm package name which defines the type (including
+//.         [scope][4] where appropriate); and
 //.
 //.       - the `name` SHOULD be the unique name of the type; and
 //.
@@ -101,7 +100,7 @@
   var $$type = '@@type';
 
   //  RPARSE :: RegExp
-  var RPARSE = /^((?:@[^]+?\/)?[^/]+)\/([^]+?)(?:@(\d+))?$/;
+  var RPARSE = /^([^]+)\/([^]+?)(?:@(\d+))?$/;
 
   //       TypeIdentifier :: (Nullable String, String, Number)
   //                      -> TypeIdentifier

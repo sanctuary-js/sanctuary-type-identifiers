@@ -55,7 +55,7 @@ test('type', function() {
   eq(type(mock('Type')), named('Type'));
 
   eq(type(mock('package/Type')), TypeIdentifier('package', 'Type', 0));
-  eq(type(mock('package/Type/X')), TypeIdentifier('package', 'Type/X', 0));
+  eq(type(mock('package/Type/X')), TypeIdentifier('package/Type', 'X', 0));
   eq(type(mock('@scope/package/Type')), TypeIdentifier('@scope/package', 'Type', 0));
   eq(type(mock('')), TypeIdentifier(null, '', 0));
   eq(type(mock('/Type')), TypeIdentifier(null, '/Type', 0));
@@ -65,7 +65,7 @@ test('type', function() {
   eq(type(mock('package/Type@1')), TypeIdentifier('package', 'Type', 1));
   eq(type(mock('package/Type@999')), TypeIdentifier('package', 'Type', 999));
   eq(type(mock('package/Type@X')), TypeIdentifier('package', 'Type@X', 0));
-  eq(type(mock('package////@3@2@1@1')), TypeIdentifier('package', '///@3@2@1', 1));
+  eq(type(mock('package////@3@2@1@1')), TypeIdentifier('package///', '@3@2@1', 1));
 
   eq(type(Identity(42)), TypeIdentifier('my-package', 'Identity', 0));
   eq(type(Identity), named('Function'));
