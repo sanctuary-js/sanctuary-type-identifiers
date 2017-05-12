@@ -33,6 +33,10 @@ function Just(x) {
   return {constructor: MaybeTypeRep, isNothing: false, isJust: true, value: x};
 }
 
+function TypeIdentifier(namespace, name, version) {
+  return {namespace: namespace, name: name, version: version};
+}
+
 
 test('type', function() {
   eq(type(null), 'Null');
@@ -54,4 +58,19 @@ test('type', function() {
   eq(type(new Boolean(false)), 'Boolean');
   eq(type(new Number(0)), 'Number');
   eq(type(new String('')), 'String');
+});
+
+test('parse', function() {
+  eq(type.parse('package/Type'), TypeIdentifier('package', 'Type', 0));
+  eq(type.parse('package/Type/X'), TypeIdentifier('package/Type', 'X', 0));
+  eq(type.parse('@scope/package/Type'), TypeIdentifier('@scope/package', 'Type', 0));
+  eq(type.parse(''), TypeIdentifier(null, '', 0));
+  eq(type.parse('/Type'), TypeIdentifier(null, '/Type', 0));
+  eq(type.parse('@0'), TypeIdentifier(null, '@0', 0));
+  eq(type.parse('foo/\n@1'), TypeIdentifier('foo', '\n', 1));
+  eq(type.parse('Type@1'), TypeIdentifier(null, 'Type@1', 0));
+  eq(type.parse('package/Type@1'), TypeIdentifier('package', 'Type', 1));
+  eq(type.parse('package/Type@999'), TypeIdentifier('package', 'Type', 999));
+  eq(type.parse('package/Type@X'), TypeIdentifier('package', 'Type@X', 0));
+  eq(type.parse('package////@3@2@1@1'), TypeIdentifier('package///', '@3@2@1', 1));
 });
