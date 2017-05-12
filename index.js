@@ -42,7 +42,7 @@
 //.
 //.       - `<namespace>` MUST consist of one or more characters, and
 //.         SHOULD equal the name of the npm package which defines the
-//.         type (including [scope][4] where appropriate);
+//.         type (including [scope][3] where appropriate);
 //.
 //.       - `<name>` MUST consist of one or more characters, and SHOULD
 //.         be the unique name of the type; and
@@ -138,7 +138,7 @@
   //# type :: Any -> String
   //.
   //. Takes any value and returns a string which identifies its type. If the
-  //. value conforms to the [specification][3], the custom type identifier is
+  //. value conforms to the [specification][4], the custom type identifier is
   //. returned.
   //.
   //. ```javascript
@@ -162,7 +162,7 @@
 
   //# type.parse :: String -> { namespace :: Nullable String, name :: String, version :: Number }
   //.
-  //. Takes any string and parses it according to the [specification][3],
+  //. Takes any string and parses it according to the [specification][4],
   //. returning an object with `namespace`, `name`, and `version` fields.
   //.
   //. ```javascript
@@ -190,5 +190,5 @@
 
 //. [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
 //. [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
-//. [3]: #specification
-//. [4]: https://docs.npmjs.com/misc/scope
+//. [3]: https://docs.npmjs.com/misc/scope
+//. [4]: #specification
