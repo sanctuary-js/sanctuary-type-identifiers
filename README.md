@@ -9,39 +9,41 @@ non-overlapping types. The language provides two constructs for this
 purpose: the [`typeof`][1] operator and [`Object.prototype.toString`][2].
 Each has pros and cons, but neither supports user-defined types.
 
-This package specifies an [algorithm][3] for deriving a _type identifier_
-from any JavaScript value, and exports an implementation of the algorithm.
-Authors of algebraic data types may follow this specification in order to
-make their data types compatible with the algorithm.
+sanctuary-type-identifiers comprises:
 
-### Algorithm
+  - an npm and browser -compatible package for deriving the
+    _type identifier_ of a JavaScript value; and
+  - a specification which authors may follow to specify type
+    identifiers for their types.
 
-1.  Take any JavaScript value `x`.
+### Specification
 
-2.  If `x` is `null` or `undefined`, go to step 6.
+For a type to be compatible with the algorithm:
 
-3.  If `x.constructor` evaluates to `null` or `undefined`, go to step 6.
+  - every member of the type MUST have a `constructor` property
+    pointing to an object known as the _type representative_;
 
-4.  If `x.constructor.prototype === x`, go to step 6. This check prevents a
-    prototype object from being considered a member of its associated type.
+  - the type representative MUST have a `@@type` property
+    (the _type identifier_); and
 
-5.  If `typeof x.constructor['@@type']` evaluates to `'string'`, return
-    the value of `x.constructor['@@type']`.
+  - the type identifier MUST be a string primitive and SHOULD have
+    format `'<namespace>/<name>[@<version>]'`, where:
 
-6.  Return the [`Object.prototype.toString`][2] representation of `x`
-    without the leading `'[object '` and trailing `']'`.
+      - `<namespace>` MUST consist of one or more characters, and
+        SHOULD equal the name of the npm package which defines the
+        type (including [scope][4] where appropriate);
 
-### Compatibility
+      - `<name>` MUST consist of one or more characters, and SHOULD
+        be the unique name of the type; and
 
-For an algebraic data type to be compatible with the [algorithm][3]:
+      - `<version>` MUST consist of one or more digits, and SHOULD
+        represent the version of the type.
 
-  - every member of the type must have a `constructor` property pointing
-    to an object known as the _type representative_;
+If the type identifier does not conform to the format specified above,
+it is assumed that the entire string represents the _name_ of the type;
+_namespace_ will be `null` and _version_ will be `0`.
 
-  - the type representative must have a `@@type` property; and
-
-  - the type representative's `@@type` property (the _type identifier_)
-    must be a string primitive, ideally `'<npm-package-name>/<type-name>'`.
+If the _version_ is not given, it is assumed to be `0`.
 
 For example:
 
@@ -74,16 +76,56 @@ function Identity(x) {
 ### Usage
 
 ```javascript
-var Identity = require('my-package').Identity;
-var type = require('sanctuary-type-identifiers');
+const type = require('sanctuary-type-identifiers');
+```
 
-type(null);         // => 'Null'
-type(true);         // => 'Boolean'
-type([1, 2, 3]);    // => 'Array'
-type(Identity);     // => 'Function'
-type(Identity(0));  // => 'my-package/Identity'
+```javascript
+> function Identity(x) {
+.   if (!(this instanceof Identity)) return new Identity(x);
+.   this.value = x;
+. }
+. Identity['@@type'] = 'my-package/Identity@1';
+
+> type.parse(type(Identity(0)))
+{namespace: 'my-package', name: 'Identity', version: 1}
+```
+
+### API
+
+<h4 name="type"><code><a href="https://github.com/sanctuary-js/sanctuary-type-identifiers/blob/v2.0.0/index.js#L138">type :: Any -> String</a></code></h4>
+
+Takes any value and returns a string which identifies its type. If the
+value conforms to the [specification][3], the custom type identifier is
+returned.
+
+```javascript
+> type(null)
+'Null'
+
+> type(true)
+'Boolean'
+
+> type(Identity(0))
+'my-package/Identity@1'
+```
+
+<h4 name="type.parse"><code><a href="https://github.com/sanctuary-js/sanctuary-type-identifiers/blob/v2.0.0/index.js#L163">type.parse :: String -> { namespace :: Nullable String, name :: String, version :: Number }</a></code></h4>
+
+Takes any string and parses it according to the [specification][3],
+returning an object with `namespace`, `name`, and `version` fields.
+
+```javascript
+> type.parse('my-package/List@2')
+{namespace: 'my-package', name: 'List', version: 2}
+
+> type.parse('nonsense!')
+{namespace: null, name: 'nonsense!', version: 0}
+
+> type.parse(Identity['@@type'])
+{namespace: 'my-package', name: 'Identity', version: 1}
 ```
 
 [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
 [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
-[3]: #algorithm
+[3]: #specification
+[4]: https://docs.npmjs.com/misc/scope
