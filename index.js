@@ -106,13 +106,13 @@
   //  pattern :: RegExp
   var pattern = new RegExp(
     '^'
-  + '([^]+)'      //  <namespace>
-  + '/'           //  SOLIDUS (U+002F)
-  + '([^]+?)'     //  <name>
-  + '(?:'         //  optional non-capturing group {
-  +   '@'         //    COMMERCIAL AT (U+0040)
-  +   '([0-9]+)'  //    <version>
-  + ')?'          //  }
+  + '([\\s\\S]+)'   //  <namespace>
+  + '/'             //  SOLIDUS (U+002F)
+  + '([\\s\\S]+?)'  //  <name>
+  + '(?:'           //  optional non-capturing group {
+  +   '@'           //    COMMERCIAL AT (U+0040)
+  +   '([0-9]+)'    //    <version>
+  + ')?'            //  }
   + '$'
   );
 
