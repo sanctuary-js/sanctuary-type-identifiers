@@ -31,7 +31,7 @@ For a type to be compatible with the algorithm:
 
       - `<namespace>` MUST consist of one or more characters, and
         SHOULD equal the name of the npm package which defines the
-        type (including [scope][4] where appropriate);
+        type (including [scope][3] where appropriate);
 
       - `<name>` MUST consist of one or more characters, and SHOULD
         be the unique name of the type; and
@@ -92,10 +92,10 @@ const type = require('sanctuary-type-identifiers');
 
 ### API
 
-<h4 name="type"><code><a href="https://github.com/sanctuary-js/sanctuary-type-identifiers/blob/v2.0.0/index.js#L138">type :: Any -> String</a></code></h4>
+<h4 name="type"><code><a href="https://github.com/sanctuary-js/sanctuary-type-identifiers/blob/v2.0.1/index.js#L138">type :: Any -> String</a></code></h4>
 
 Takes any value and returns a string which identifies its type. If the
-value conforms to the [specification][3], the custom type identifier is
+value conforms to the [specification][4], the custom type identifier is
 returned.
 
 ```javascript
@@ -109,9 +109,9 @@ returned.
 'my-package/Identity@1'
 ```
 
-<h4 name="type.parse"><code><a href="https://github.com/sanctuary-js/sanctuary-type-identifiers/blob/v2.0.0/index.js#L163">type.parse :: String -> { namespace :: Nullable String, name :: String, version :: Number }</a></code></h4>
+<h4 name="type.parse"><code><a href="https://github.com/sanctuary-js/sanctuary-type-identifiers/blob/v2.0.1/index.js#L163">type.parse :: String -> { namespace :: Nullable String, name :: String, version :: Number }</a></code></h4>
 
-Takes any string and parses it according to the [specification][3],
+Takes any string and parses it according to the [specification][4],
 returning an object with `namespace`, `name`, and `version` fields.
 
 ```javascript
@@ -127,5 +127,5 @@ returning an object with `namespace`, `name`, and `version` fields.
 
 [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
 [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
-[3]: #specification
-[4]: https://docs.npmjs.com/misc/scope
+[3]: https://docs.npmjs.com/misc/scope
+[4]: #specification
