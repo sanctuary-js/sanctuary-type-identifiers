@@ -17,7 +17,7 @@
     "mocha": "3.2.x",
     "remember-bower": "0.1.x",
     "sanctuary-style": "0.5.x",
-    "sanctuary-type-classes": "5.1.x",
+    "sanctuary-type-classes": "7.0.x",
     "transcribe": "0.5.x",
     "xyz": "2.0.x"
   },
