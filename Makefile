@@ -1,5 +1,5 @@
 DOCTEST = node_modules/.bin/doctest --module commonjs --prefix .
-ESLINT = node_modules/.bin/eslint --config node_modules/sanctuary-style/eslint-es3.json --env es3
+ESLINT = node_modules/.bin/eslint --report-unused-disable-directives
 MOCHA = node_modules/.bin/mocha --reporter dot --ui tdd
 NPM = npm
 REMEMBER_BOWER = node_modules/.bin/remember-bower
@@ -26,18 +26,7 @@ README.md: index.js
 
 .PHONY: lint
 lint:
-	$(ESLINT) \
-	  --global define \
-	  --global module \
-	  --global self \
-	  --rule 'key-spacing: [off]' \
-	  -- index.js
-	$(ESLINT) \
-	  --env node \
-	  --global suite \
-	  --global test \
-	  --rule 'max-len: [off]' \
-	  -- test/index.js
+	$(ESLINT) -- index.js test/index.js
 	$(REMEMBER_BOWER) $(shell pwd)
 
 
