@@ -178,9 +178,11 @@
   type.parse = function parse(s) {
     var groups = pattern.exec(s);
     return {
+      /* eslint-disable key-spacing */
       namespace: groups == null || groups[1] == null ? null : groups[1],
       name:      groups == null                      ? s    : groups[2],
       version:   groups == null || groups[3] == null ? 0    : Number(groups[3])
+      /* eslint-enable key-spacing */
     };
   };
 
