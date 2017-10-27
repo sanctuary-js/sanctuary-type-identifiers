@@ -18,15 +18,16 @@
   ],
   "dependencies": {},
   "ignore": [
+    "/.circleci/",
     "/.git/",
     "/bower_components/",
+    "/coverage/",
     "/node_modules/",
     "/scripts/",
     "/test/",
     "/.*",
     "/CONTRIBUTING.md",
     "/Makefile",
-    "/circle.yml",
     "/package.json"
   ]
 }
