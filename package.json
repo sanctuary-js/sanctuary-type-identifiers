@@ -15,7 +15,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "sanctuary-scripts": "1.0.x",
+    "sanctuary-scripts": "1.1.x",
     "sanctuary-type-classes": "7.1.x"
   },
   "files": [
