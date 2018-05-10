@@ -17,7 +17,7 @@
   "devDependencies": {
     "sanctuary-scripts": "1.5.x",
     "sanctuary-show": "1.0.x",
-    "sanctuary-type-classes": "8.1.x"
+    "sanctuary-type-classes": "8.2.x"
   },
   "files": [
     "/LICENSE",
