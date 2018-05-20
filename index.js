@@ -61,7 +61,7 @@
 //. ```javascript
 //. //  Identity :: a -> Identity a
 //. function Identity(x) {
-//.   if (!(this instanceof Identity)) return new Identity(x);
+//.   if (!(this instanceof Identity)) return new Identity (x);
 //.   this.value = x;
 //. }
 //.
@@ -90,14 +90,14 @@
 
   /* istanbul ignore else */
   if (typeof module === 'object' && typeof module.exports === 'object') {
-    module.exports = f();
+    module.exports = f ();
   } else if (typeof define === 'function' && define.amd != null) {
-    define([], f);
+    define ([], f);
   } else {
-    self.sanctuaryTypeIdentifiers = f();
+    self.sanctuaryTypeIdentifiers = f ();
   }
 
-}(function() {
+} (function() {
 
   'use strict';
 
@@ -105,7 +105,7 @@
   var $$type = '@@type';
 
   //  pattern :: RegExp
-  var pattern = new RegExp(
+  var pattern = new RegExp (
     '^'
   + '([\\s\\S]+)'   //  <namespace>
   + '/'             //  SOLIDUS (U+002F)
@@ -120,17 +120,17 @@
   //. ### Usage
   //.
   //. ```javascript
-  //. const type = require('sanctuary-type-identifiers');
+  //. const type = require ('sanctuary-type-identifiers');
   //. ```
   //.
   //. ```javascript
   //. > function Identity(x) {
-  //. .   if (!(this instanceof Identity)) return new Identity(x);
+  //. .   if (!(this instanceof Identity)) return new Identity (x);
   //. .   this.value = x;
   //. . }
   //. . Identity['@@type'] = 'my-package/Identity@1';
   //.
-  //. > type.parse(type(Identity(0)))
+  //. > type.parse (type (Identity (0)))
   //. {namespace: 'my-package', name: 'Identity', version: 1}
   //. ```
   //.
@@ -143,13 +143,13 @@
   //. returned.
   //.
   //. ```javascript
-  //. > type(null)
+  //. > type (null)
   //. 'Null'
   //.
-  //. > type(true)
+  //. > type (true)
   //. 'Boolean'
   //.
-  //. > type(Identity(0))
+  //. > type (Identity (0))
   //. 'my-package/Identity@1'
   //. ```
   function type(x) {
@@ -158,7 +158,8 @@
            x.constructor.prototype !== x &&
            typeof x.constructor[$$type] === 'string' ?
       x.constructor[$$type] :
-      Object.prototype.toString.call(x).slice('[object '.length, -']'.length);
+      (Object.prototype.toString.call (x)).slice ('[object '.length,
+                                                  -']'.length);
   }
 
   //# type.parse :: String -> { namespace :: Nullable String, name :: String, version :: Number }
@@ -167,24 +168,26 @@
   //. returning an object with `namespace`, `name`, and `version` fields.
   //.
   //. ```javascript
-  //. > type.parse('my-package/List@2')
+  //. > type.parse ('my-package/List@2')
   //. {namespace: 'my-package', name: 'List', version: 2}
   //.
-  //. > type.parse('nonsense!')
+  //. > type.parse ('nonsense!')
   //. {namespace: null, name: 'nonsense!', version: 0}
   //.
-  //. > type.parse(Identity['@@type'])
+  //. > type.parse (Identity['@@type'])
   //. {namespace: 'my-package', name: 'Identity', version: 1}
   //. ```
   type.parse = function parse(s) {
-    var groups = pattern.exec(s);
-    return {
-      /* eslint-disable key-spacing */
-      namespace: groups == null || groups[1] == null ? null : groups[1],
-      name:      groups == null                      ? s    : groups[2],
-      version:   groups == null || groups[3] == null ? 0    : Number(groups[3])
-      /* eslint-enable key-spacing */
-    };
+    var namespace = null;
+    var name = s;
+    var version = 0;
+    var groups = pattern.exec (s);
+    if (groups != null) {
+      namespace = groups[1];
+      name = groups[2];
+      if (groups[3] != null) version = Number (groups[3]);
+    }
+    return {namespace: namespace, name: name, version: version};
   };
 
   return type;
