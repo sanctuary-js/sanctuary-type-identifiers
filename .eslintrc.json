@@ -10,6 +10,12 @@
         "no-unused-vars": ["error", {"varsIgnorePattern": "^(Identity|type)$"}],
         "semi-spacing": ["off"]
       }
+    },
+    {
+      "files": ["index.js"],
+      "rules": {
+        "multiline-comment-style": ["off"]
+      }
     }
   ]
 }
