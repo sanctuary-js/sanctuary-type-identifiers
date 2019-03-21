@@ -7,8 +7,7 @@
       "globals": {"Identity": false, "type": false},
       "rules": {
         "no-extra-semi": ["off"],
-        "no-unused-vars": ["error", {"varsIgnorePattern": "^(Identity|type)$"}],
-        "semi-spacing": ["off"]
+        "no-unused-vars": ["error", {"varsIgnorePattern": "^(Identity|type)$"}]
       }
     },
     {
