@@ -21,17 +21,26 @@ function Identity(x) {
   this.value = x;
 }
 
-Identity['@@type'] = 'my-package/Identity';
+Identity.prototype['@@type'] = 'my-package/Identity';
 
 
-var MaybeTypeRep = {'@@type': 'my-package/Maybe'};
+var maybeTypeIdent = 'my-package/Maybe';
 
 //  Nothing :: Maybe a
-var Nothing = {constructor: MaybeTypeRep, isNothing: true, isJust: false};
+var Nothing = {
+  '@@type': maybeTypeIdent,
+  'isNothing': true,
+  'isJust': false
+};
 
 //  Just :: a -> Maybe a
 function Just(x) {
-  return {constructor: MaybeTypeRep, isNothing: false, isJust: true, value: x};
+  return {
+    '@@type': maybeTypeIdent,
+    'isNothing': false,
+    'isJust': true,
+    'value': x
+  };
 }
 
 function TypeIdentifier(namespace, name, version) {
@@ -50,7 +59,7 @@ test ('type', function() {
   eq (type (Identity.prototype), 'Object');
   eq (type (Nothing), 'my-package/Maybe');
   eq (type (Just (0)), 'my-package/Maybe');
-  eq (type (Nothing.constructor), 'Object');
+  eq (type (Nothing.constructor), 'Function');
 
   eq (type (false), 'Boolean');
   eq (type (0), 'Number');
