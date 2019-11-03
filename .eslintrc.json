@@ -4,7 +4,7 @@
   "overrides": [
     {
       "files": ["*.md"],
-      "globals": {"Identity": false, "type": false},
+      "globals": {"Identity": false, "show": false, "type": false},
       "rules": {
         "no-extra-semi": ["off"],
         "no-unused-vars": ["error", {"varsIgnorePattern": "^(Identity|type)$"}]

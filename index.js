@@ -31,10 +31,7 @@
 //.
 //. For a type to be compatible with the algorithm:
 //.
-//.   - every member of the type MUST have a `constructor` property
-//.     pointing to an object known as the _type representative_;
-//.
-//.   - the type representative MUST have a `@@type` property
+//.   - every member of the type MUST have a `@@type` property
 //.     (the _type identifier_); and
 //.
 //.   - the type identifier MUST be a string primitive and SHOULD have
@@ -55,34 +52,6 @@
 //. _namespace_ will be `null` and _version_ will be `0`.
 //.
 //. If the _version_ is not given, it is assumed to be `0`.
-//.
-//. For example:
-//.
-//. ```javascript
-//. //  Identity :: a -> Identity a
-//. function Identity(x) {
-//.   if (!(this instanceof Identity)) return new Identity (x);
-//.   this.value = x;
-//. }
-//.
-//. Identity['@@type'] = 'my-package/Identity';
-//. ```
-//.
-//. Note that by using a constructor function the `constructor` property is set
-//. implicitly for each value created. Constructor functions are convenient for
-//. this reason, but are not required. This definition is also valid:
-//.
-//. ```javascript
-//. //  IdentityTypeRep :: TypeRep Identity
-//. var IdentityTypeRep = {
-//.   '@@type': 'my-package/Identity'
-//. };
-//.
-//. //  Identity :: a -> Identity a
-//. function Identity(x) {
-//.   return {constructor: IdentityTypeRep, value: x};
-//. }
-//. ```
 
 (function(f) {
 
@@ -124,11 +93,18 @@
   //. ```
   //.
   //. ```javascript
-  //. > function Identity(x) {
-  //. .   if (!(this instanceof Identity)) return new Identity (x);
-  //. .   this.value = x;
+  //. > const Identity$prototype = {
+  //. .   '@@type': 'my-package/Identity@1',
+  //. .   '@@show': function() {
+  //. .     return 'Identity (' + show (this.value) + ')';
+  //. .   }
   //. . }
-  //. . Identity['@@type'] = 'my-package/Identity@1';
+  //.
+  //. > const Identity = value =>
+  //. .   Object.assign (Object.create (Identity$prototype), {value})
+  //.
+  //. > type (Identity (0))
+  //. 'my-package/Identity@1'
   //.
   //. > type.parse (type (Identity (0)))
   //. {namespace: 'my-package', name: 'Identity', version: 1}
@@ -156,8 +132,8 @@
     return x != null &&
            x.constructor != null &&
            x.constructor.prototype !== x &&
-           typeof x.constructor[$$type] === 'string' ?
-      x.constructor[$$type] :
+           typeof x[$$type] === 'string' ?
+      x[$$type] :
       (Object.prototype.toString.call (x)).slice ('[object '.length,
                                                   -']'.length);
   }
@@ -174,7 +150,7 @@
   //. > type.parse ('nonsense!')
   //. {namespace: null, name: 'nonsense!', version: 0}
   //.
-  //. > type.parse (Identity['@@type'])
+  //. > type.parse (type (Identity (0)))
   //. {namespace: 'my-package', name: 'Identity', version: 1}
   //. ```
   type.parse = function parse(s) {
