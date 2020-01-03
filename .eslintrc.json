@@ -6,6 +6,7 @@
       "files": ["*.md"],
       "globals": {"Identity": false, "show": false, "type": false},
       "rules": {
+        "func-style": ["error", "declaration", {"allowArrowFunctions": true}],
         "no-extra-semi": ["off"],
         "no-unused-vars": ["error", {"varsIgnorePattern": "^(Identity|type)$"}]
       }
