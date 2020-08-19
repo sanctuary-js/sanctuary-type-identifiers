@@ -1,11 +1,11 @@
 'use strict';
 
-var assert = require ('assert');
+const assert = require ('assert');
 
-var show = require ('sanctuary-show');
-var Z = require ('sanctuary-type-classes');
+const show = require ('sanctuary-show');
+const Z = require ('sanctuary-type-classes');
 
-var type = require ('..');
+const type = require ('..');
 
 
 function eq(actual, expected) {
@@ -24,31 +24,31 @@ function Identity(x) {
 Identity.prototype['@@type'] = 'my-package/Identity';
 
 
-var maybeTypeIdent = 'my-package/Maybe';
+const maybeTypeIdent = 'my-package/Maybe';
 
 //  Nothing :: Maybe a
-var Nothing = {
+const Nothing = {
   '@@type': maybeTypeIdent,
   'isNothing': true,
-  'isJust': false
+  'isJust': false,
 };
 
 //  Just :: a -> Maybe a
-function Just(x) {
-  return {
-    '@@type': maybeTypeIdent,
-    'isNothing': false,
-    'isJust': true,
-    'value': x
-  };
-}
+const Just = x => ({
+  '@@type': maybeTypeIdent,
+  'isNothing': false,
+  'isJust': true,
+  'value': x,
+});
 
-function TypeIdentifier(namespace, name, version) {
-  return {namespace: namespace, name: name, version: version};
-}
+const TypeIdentifier = (namespace, name, version) => ({
+  namespace,
+  name,
+  version,
+});
 
 
-test ('type', function() {
+test ('type', () => {
   eq (type (null), 'Null');
   eq (type (undefined), 'Undefined');
   eq (type ({constructor: null}), 'Object');
@@ -70,7 +70,7 @@ test ('type', function() {
   eq (type (new String ('')), 'String');
 });
 
-test ('parse', function() {
+test ('parse', () => {
   eq (type.parse ('package/Type'), TypeIdentifier ('package', 'Type', 0));
   eq (type.parse ('package/Type/X'), TypeIdentifier ('package/Type', 'X', 0));
   eq (type.parse ('@scope/package/Type'), TypeIdentifier ('@scope/package', 'Type', 0));

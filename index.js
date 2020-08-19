@@ -53,7 +53,7 @@
 //.
 //. If the _version_ is not given, it is assumed to be `0`.
 
-(function(f) {
+(f => {
 
   'use strict';
 
@@ -66,15 +66,15 @@
     self.sanctuaryTypeIdentifiers = f ();
   }
 
-} (function() {
+}) (() => {
 
   'use strict';
 
   //  $$type :: String
-  var $$type = '@@type';
+  const $$type = '@@type';
 
   //  pattern :: RegExp
-  var pattern = new RegExp (
+  const pattern = new RegExp (
     '^'
   + '([\\s\\S]+)'   //  <namespace>
   + '/'             //  SOLIDUS (U+002F)
@@ -97,11 +97,12 @@
   //. .   '@@type': 'my-package/Identity@1',
   //. .   '@@show': function() {
   //. .     return 'Identity (' + show (this.value) + ')';
-  //. .   }
+  //. .   },
   //. . }
   //.
-  //. > const Identity = value =>
+  //. > const Identity = value => (
   //. .   Object.assign (Object.create (Identity$prototype), {value})
+  //. . )
   //.
   //. > type (Identity (0))
   //. 'my-package/Identity@1'
@@ -128,15 +129,15 @@
   //. > type (Identity (0))
   //. 'my-package/Identity@1'
   //. ```
-  function type(x) {
-    return x != null &&
-           x.constructor != null &&
-           x.constructor.prototype !== x &&
-           typeof x[$$type] === 'string' ?
-      x[$$type] :
-      (Object.prototype.toString.call (x)).slice ('[object '.length,
-                                                  -']'.length);
-  }
+  const type = x => (
+    x != null &&
+    x.constructor != null &&
+    x.constructor.prototype !== x &&
+    typeof x[$$type] === 'string'
+    ? x[$$type]
+    : (Object.prototype.toString.call (x)).slice ('[object '.length,
+                                                  -']'.length)
+  );
 
   //# type.parse :: String -> { namespace :: Nullable String, name :: String, version :: Number }
   //.
@@ -153,22 +154,19 @@
   //. > type.parse (type (Identity (0)))
   //. {namespace: 'my-package', name: 'Identity', version: 1}
   //. ```
-  type.parse = function parse(s) {
-    var namespace = null;
-    var name = s;
-    var version = 0;
-    var groups = pattern.exec (s);
-    if (groups != null) {
-      namespace = groups[1];
-      name = groups[2];
-      if (groups[3] != null) version = Number (groups[3]);
-    }
-    return {namespace: namespace, name: name, version: version};
+  type.parse = s => {
+    // eslint-disable-next-line no-sparse-arrays
+    const [, namespace, name, version] = pattern.exec (s) || [, null, s, null];
+    return {
+      namespace,
+      name,
+      version: version == null ? 0 : Number (version),
+    };
   };
 
   return type;
 
-}));
+});
 
 //. [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
 //. [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString
