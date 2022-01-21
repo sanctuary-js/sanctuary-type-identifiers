@@ -53,11 +53,12 @@ const type = require ('sanctuary-type-identifiers');
 .   '@@type': 'my-package/Identity@1',
 .   '@@show': function() {
 .     return 'Identity (' + show (this.value) + ')';
-.   }
+.   },
 . }
 
-> const Identity = value =>
+> const Identity = value => (
 .   Object.assign (Object.create (Identity$prototype), {value})
+. )
 
 > type (Identity (0))
 'my-package/Identity@1'
@@ -68,7 +69,7 @@ const type = require ('sanctuary-type-identifiers');
 
 ### API
 
-#### <a name="type" href="https://github.com/sanctuary-js/sanctuary-type-identifiers/blob/v3.0.0/index.js#L115">`type :: Any -⁠> String`</a>
+#### <a name="type" href="https://github.com/sanctuary-js/sanctuary-type-identifiers/blob/v4.0.0/index.js#L116">`type :: Any -⁠> String`</a>
 
 Takes any value and returns a string which identifies its type. If the
 value conforms to the [specification][4], the custom type identifier is
@@ -85,7 +86,7 @@ returned.
 'my-package/Identity@1'
 ```
 
-#### <a name="type.parse" href="https://github.com/sanctuary-js/sanctuary-type-identifiers/blob/v3.0.0/index.js#L141">`type.parse :: String -⁠> { namespace :: Nullable String, name :: String, version :: Number }`</a>
+#### <a name="type.parse" href="https://github.com/sanctuary-js/sanctuary-type-identifiers/blob/v4.0.0/index.js#L142">`type.parse :: String -⁠> { namespace :: Nullable String, name :: String, version :: Number }`</a>
 
 Takes any string and parses it according to the [specification][4],
 returning an object with `namespace`, `name`, and `version` fields.
