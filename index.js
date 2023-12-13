@@ -53,120 +53,100 @@
 //.
 //. If the _version_ is not given, it is assumed to be `0`.
 
-(f => {
+export {identifierOf, parseIdentifier};
 
-  'use strict';
+//  $$type :: String
+const $$type = '@@type';
 
-  /* istanbul ignore else */
-  if (typeof module === 'object' && typeof module.exports === 'object') {
-    module.exports = f ();
-  } else if (typeof define === 'function' && define.amd != null) {
-    define ([], f);
-  } else {
-    self.sanctuaryTypeIdentifiers = f ();
-  }
+//  pattern :: RegExp
+const pattern = new RegExp (
+  '^'
++ '([\\s\\S]+)'   //  <namespace>
++ '/'             //  SOLIDUS (U+002F)
++ '([\\s\\S]+?)'  //  <name>
++ '(?:'           //  optional non-capturing group {
++   '@'           //    COMMERCIAL AT (U+0040)
++   '([0-9]+)'    //    <version>
++ ')?'            //  }
++ '$'
+);
 
-}) (() => {
+//. ### Usage
+//.
+//. ```javascript
+//. import {identifierOf, parseIdentifier} from 'sanctuary-type-identifiers';
+//. ```
+//.
+//. ```javascript
+//. > const Identity$prototype = {
+//. .   '@@type': 'my-package/Identity@1',
+//. .   '@@show': function() {
+//. .     return 'Identity (' + show (this.value) + ')';
+//. .   },
+//. . }
+//.
+//. > const Identity = value => (
+//. .   Object.assign (Object.create (Identity$prototype), {value})
+//. . )
+//.
+//. > identifierOf (Identity (0))
+//. 'my-package/Identity@1'
+//.
+//. > parseIdentifier (identifierOf (Identity (0)))
+//. {namespace: 'my-package', name: 'Identity', version: 1}
+//. ```
+//.
+//. ### API
+//.
+//# identifierOf :: Any -> String
+//.
+//. Takes any value and returns a string which identifies its type. If the
+//. value conforms to the [specification][4], the custom type identifier is
+//. returned.
+//.
+//. ```javascript
+//. > identifierOf (null)
+//. 'Null'
+//.
+//. > identifierOf (true)
+//. 'Boolean'
+//.
+//. > identifierOf (Identity (0))
+//. 'my-package/Identity@1'
+//. ```
+const identifierOf = x => (
+  x != null &&
+  x.constructor != null &&
+  x.constructor.prototype !== x &&
+  typeof x[$$type] === 'string'
+  ? x[$$type]
+  : (Object.prototype.toString.call (x)).slice ('[object '.length, -']'.length)
+);
 
-  'use strict';
-
-  //  $$type :: String
-  const $$type = '@@type';
-
-  //  pattern :: RegExp
-  const pattern = new RegExp (
-    '^'
-  + '([\\s\\S]+)'   //  <namespace>
-  + '/'             //  SOLIDUS (U+002F)
-  + '([\\s\\S]+?)'  //  <name>
-  + '(?:'           //  optional non-capturing group {
-  +   '@'           //    COMMERCIAL AT (U+0040)
-  +   '([0-9]+)'    //    <version>
-  + ')?'            //  }
-  + '$'
-  );
-
-  //. ### Usage
-  //.
-  //. ```javascript
-  //. const type = require ('sanctuary-type-identifiers');
-  //. ```
-  //.
-  //. ```javascript
-  //. > const Identity$prototype = {
-  //. .   '@@type': 'my-package/Identity@1',
-  //. .   '@@show': function() {
-  //. .     return 'Identity (' + show (this.value) + ')';
-  //. .   },
-  //. . }
-  //.
-  //. > const Identity = value => (
-  //. .   Object.assign (Object.create (Identity$prototype), {value})
-  //. . )
-  //.
-  //. > type (Identity (0))
-  //. 'my-package/Identity@1'
-  //.
-  //. > type.parse (type (Identity (0)))
-  //. {namespace: 'my-package', name: 'Identity', version: 1}
-  //. ```
-  //.
-  //. ### API
-  //.
-  //# type :: Any -> String
-  //.
-  //. Takes any value and returns a string which identifies its type. If the
-  //. value conforms to the [specification][4], the custom type identifier is
-  //. returned.
-  //.
-  //. ```javascript
-  //. > type (null)
-  //. 'Null'
-  //.
-  //. > type (true)
-  //. 'Boolean'
-  //.
-  //. > type (Identity (0))
-  //. 'my-package/Identity@1'
-  //. ```
-  const type = x => (
-    x != null &&
-    x.constructor != null &&
-    x.constructor.prototype !== x &&
-    typeof x[$$type] === 'string'
-    ? x[$$type]
-    : (Object.prototype.toString.call (x)).slice ('[object '.length,
-                                                  -']'.length)
-  );
-
-  //# type.parse :: String -> { namespace :: Nullable String, name :: String, version :: Number }
-  //.
-  //. Takes any string and parses it according to the [specification][4],
-  //. returning an object with `namespace`, `name`, and `version` fields.
-  //.
-  //. ```javascript
-  //. > type.parse ('my-package/List@2')
-  //. {namespace: 'my-package', name: 'List', version: 2}
-  //.
-  //. > type.parse ('nonsense!')
-  //. {namespace: null, name: 'nonsense!', version: 0}
-  //.
-  //. > type.parse (type (Identity (0)))
-  //. {namespace: 'my-package', name: 'Identity', version: 1}
-  //. ```
-  type.parse = s => {
-    // eslint-disable-next-line no-sparse-arrays
-    const [, namespace, name, version] = pattern.exec (s) || [, null, s, null];
-    return {
-      namespace,
-      name,
-      version: version == null ? 0 : Number (version),
-    };
+//# parseIdentifier :: String -> { namespace :: Nullable String, name :: String, version :: Number }
+//.
+//. Takes any string and parses it according to the [specification][4],
+//. returning an object with `namespace`, `name`, and `version` fields.
+//.
+//. ```javascript
+//. > parseIdentifier ('my-package/List@2')
+//. {namespace: 'my-package', name: 'List', version: 2}
+//.
+//. > parseIdentifier ('nonsense!')
+//. {namespace: null, name: 'nonsense!', version: 0}
+//.
+//. > parseIdentifier (identifierOf (Identity (0)))
+//. {namespace: 'my-package', name: 'Identity', version: 1}
+//. ```
+const parseIdentifier = s => {
+  // eslint-disable-next-line no-sparse-arrays
+  const [, namespace, name, version] = pattern.exec (s) ?? [, null, s, null];
+  return {
+    namespace,
+    name,
+    version: version == null ? 0 : Number (version),
   };
-
-  return type;
-
-});
+};
 
 //. [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
 //. [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString

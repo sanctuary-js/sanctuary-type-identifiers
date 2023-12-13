@@ -1,11 +1,10 @@
-'use strict';
+import assert from 'node:assert';
 
-const assert = require ('assert');
+import test from 'oletus';
+import show from 'sanctuary-show';
+import Z from 'sanctuary-type-classes';
 
-const show = require ('sanctuary-show');
-const Z = require ('sanctuary-type-classes');
-
-const type = require ('..');
+import {identifierOf, parseIdentifier} from 'sanctuary-type-identifiers';
 
 
 function eq(actual, expected) {
@@ -48,39 +47,39 @@ const TypeIdentifier = (namespace, name, version) => ({
 });
 
 
-test ('type', () => {
-  eq (type (null), 'Null');
-  eq (type (undefined), 'Undefined');
-  eq (type ({constructor: null}), 'Object');
-  eq (type ({constructor: {'@@type': null}}), 'Object');
-  eq (type ({constructor: {'@@type': new String ('')}}), 'Object');
-  eq (type (Identity (42)), 'my-package/Identity');
-  eq (type (Identity), 'Function');
-  eq (type (Identity.prototype), 'Object');
-  eq (type (Nothing), 'my-package/Maybe');
-  eq (type (Just (0)), 'my-package/Maybe');
-  eq (type (Nothing.constructor), 'Function');
+test ('identifierOf', () => {
+  eq (identifierOf (null), 'Null');
+  eq (identifierOf (undefined), 'Undefined');
+  eq (identifierOf ({constructor: null}), 'Object');
+  eq (identifierOf ({constructor: {'@@type': null}}), 'Object');
+  eq (identifierOf ({constructor: {'@@type': new String ('')}}), 'Object');
+  eq (identifierOf (Identity (42)), 'my-package/Identity');
+  eq (identifierOf (Identity), 'Function');
+  eq (identifierOf (Identity.prototype), 'Object');
+  eq (identifierOf (Nothing), 'my-package/Maybe');
+  eq (identifierOf (Just (0)), 'my-package/Maybe');
+  eq (identifierOf (Nothing.constructor), 'Function');
 
-  eq (type (false), 'Boolean');
-  eq (type (0), 'Number');
-  eq (type (''), 'String');
+  eq (identifierOf (false), 'Boolean');
+  eq (identifierOf (0), 'Number');
+  eq (identifierOf (''), 'String');
 
-  eq (type (new Boolean (false)), 'Boolean');
-  eq (type (new Number (0)), 'Number');
-  eq (type (new String ('')), 'String');
+  eq (identifierOf (new Boolean (false)), 'Boolean');
+  eq (identifierOf (new Number (0)), 'Number');
+  eq (identifierOf (new String ('')), 'String');
 });
 
-test ('parse', () => {
-  eq (type.parse ('package/Type'), TypeIdentifier ('package', 'Type', 0));
-  eq (type.parse ('package/Type/X'), TypeIdentifier ('package/Type', 'X', 0));
-  eq (type.parse ('@scope/package/Type'), TypeIdentifier ('@scope/package', 'Type', 0));
-  eq (type.parse (''), TypeIdentifier (null, '', 0));
-  eq (type.parse ('/Type'), TypeIdentifier (null, '/Type', 0));
-  eq (type.parse ('@0'), TypeIdentifier (null, '@0', 0));
-  eq (type.parse ('foo/\n@1'), TypeIdentifier ('foo', '\n', 1));
-  eq (type.parse ('Type@1'), TypeIdentifier (null, 'Type@1', 0));
-  eq (type.parse ('package/Type@1'), TypeIdentifier ('package', 'Type', 1));
-  eq (type.parse ('package/Type@999'), TypeIdentifier ('package', 'Type', 999));
-  eq (type.parse ('package/Type@X'), TypeIdentifier ('package', 'Type@X', 0));
-  eq (type.parse ('package////@3@2@1@1'), TypeIdentifier ('package///', '@3@2@1', 1));
+test ('parseIdentifier', () => {
+  eq (parseIdentifier ('package/Type'), TypeIdentifier ('package', 'Type', 0));
+  eq (parseIdentifier ('package/Type/X'), TypeIdentifier ('package/Type', 'X', 0));
+  eq (parseIdentifier ('@scope/package/Type'), TypeIdentifier ('@scope/package', 'Type', 0));
+  eq (parseIdentifier (''), TypeIdentifier (null, '', 0));
+  eq (parseIdentifier ('/Type'), TypeIdentifier (null, '/Type', 0));
+  eq (parseIdentifier ('@0'), TypeIdentifier (null, '@0', 0));
+  eq (parseIdentifier ('foo/\n@1'), TypeIdentifier ('foo', '\n', 1));
+  eq (parseIdentifier ('Type@1'), TypeIdentifier (null, 'Type@1', 0));
+  eq (parseIdentifier ('package/Type@1'), TypeIdentifier ('package', 'Type', 1));
+  eq (parseIdentifier ('package/Type@999'), TypeIdentifier ('package', 'Type', 999));
+  eq (parseIdentifier ('package/Type@X'), TypeIdentifier ('package', 'Type@X', 0));
+  eq (parseIdentifier ('package////@3@2@1@1'), TypeIdentifier ('package///', '@3@2@1', 1));
 });
