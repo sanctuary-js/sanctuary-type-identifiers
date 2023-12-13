@@ -61,14 +61,15 @@ const $$type = '@@type';
 //  pattern :: RegExp
 const pattern = new RegExp (
   '^'
-+ '([\\s\\S]+)'   //  <namespace>
++ '(.+)'          //  <namespace>
 + '/'             //  SOLIDUS (U+002F)
-+ '([\\s\\S]+?)'  //  <name>
++ '(.+?)'         //  <name>
 + '(?:'           //  optional non-capturing group {
 +   '@'           //    COMMERCIAL AT (U+0040)
 +   '([0-9]+)'    //    <version>
 + ')?'            //  }
-+ '$'
++ '$',
+  's'
 );
 
 //. ### Usage
