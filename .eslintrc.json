@@ -1,12 +1,13 @@
 {
   "root": true,
   "extends": ["./node_modules/sanctuary-style/eslint.json"],
+  "parserOptions": {"ecmaVersion": 2020, "sourceType": "module"},
   "overrides": [
     {
       "files": ["*.md"],
-      "globals": {"Identity": "readonly", "show": "readonly", "type": "readonly"},
+      "globals": {"Identity": "readonly", "identifierOf": "readonly", "parseIdentifier": "readonly", "show": "readonly"},
       "rules": {
-        "no-unused-vars": ["error", {"varsIgnorePattern": "^type$"}]
+        "no-unused-vars": ["error", {"varsIgnorePattern": "^(identifierOf|parseIdentifier)$"}]
       }
     },
     {
