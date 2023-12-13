@@ -59,18 +59,7 @@ export {identifierOf, parseIdentifier};
 const $$type = '@@type';
 
 //  pattern :: RegExp
-const pattern = new RegExp (
-  '^'
-+ '(.+)'          //  <namespace>
-+ '/'             //  SOLIDUS (U+002F)
-+ '(.+?)'         //  <name>
-+ '(?:'           //  optional non-capturing group {
-+   '@'           //    COMMERCIAL AT (U+0040)
-+   '([0-9]+)'    //    <version>
-+ ')?'            //  }
-+ '$',
-  's'
-);
+const pattern = /^(?<namespace>.+)[/](?<name>.+?)(@(?<version>[0-9]+))?$/s;
 
 //. ### Usage
 //.
@@ -140,13 +129,13 @@ const identifierOf = x => (
 //. {namespace: 'my-package', name: 'Identity', version: 1}
 //. ```
 const parseIdentifier = s => {
-  // eslint-disable-next-line no-sparse-arrays
-  const [, namespace, name, version] = pattern.exec (s) ?? [, null, s, null];
-  return {
-    namespace,
-    name,
-    version: version == null ? 0 : Number (version),
-  };
+  const match = pattern.exec (s);
+  if (match == null) {
+    return {namespace: null, name: s, version: 0};
+  } else {
+    const {namespace, name, version = '0'} = match.groups;
+    return {namespace, name, version: Number (version)};
+  }
 };
 
 //. [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
