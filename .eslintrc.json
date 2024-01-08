@@ -4,16 +4,9 @@
   "parserOptions": {"ecmaVersion": 2020, "sourceType": "module"},
   "overrides": [
     {
-      "files": ["*.md"],
-      "globals": {"Identity": "readonly", "identifierOf": "readonly", "parseIdentifier": "readonly", "show": "readonly"},
+      "files": ["test/**/*.js"],
       "rules": {
-        "no-unused-vars": ["error", {"varsIgnorePattern": "^(identifierOf|parseIdentifier)$"}]
-      }
-    },
-    {
-      "files": ["index.js"],
-      "rules": {
-        "multiline-comment-style": ["off"]
+        "max-len": ["off"]
       }
     }
   ]
