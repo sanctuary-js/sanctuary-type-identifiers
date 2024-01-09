@@ -1,17 +1,8 @@
-import assert from 'node:assert';
+import {deepStrictEqual as eq} from 'node:assert';
 
 import test from 'oletus';
-import show from 'sanctuary-show';
-import Z from 'sanctuary-type-classes';
 
 import {identifierOf, parseIdentifier} from 'sanctuary-type-identifiers';
-
-
-function eq(actual, expected) {
-  assert.strictEqual (arguments.length, eq.length);
-  assert.strictEqual (show (actual), show (expected));
-  assert.strictEqual (Z.equals (actual, expected), true);
-}
 
 
 //  Identity :: a -> Identity a
