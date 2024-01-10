@@ -2,7 +2,7 @@ import {deepStrictEqual as eq} from 'node:assert';
 
 import test from 'oletus';
 
-import {identifierOf, parseIdentifier} from 'sanctuary-type-identifiers';
+import {identifierOf, parseIdentifier} from '../index.js';
 
 
 //  Identity :: a -> Identity a
